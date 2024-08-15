@@ -25,6 +25,7 @@ public class LessonCompletionServiceImpl implements LessonCompletionService {
         LessonCompletion lessonCompletionEntity = LessonCompletion.builder()
                 .lesson(lessonService.getById(lessonCompletion.getLessonId()))
                 .user(userService.getById(lessonCompletion.getUserId()))
+                .completed(lessonCompletion.getCompleted())
                 .build();
         return lessonCompletionRepository.save(lessonCompletionEntity);
     }

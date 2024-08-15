@@ -29,7 +29,7 @@ public class LessonCompletionController {
         return ResponseEntity.ok(lessonCompletionService.getById(id));
     }
 
-    @PutMapping("/{id}/progress")
+    @PutMapping("/{id}/completed")
     private ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody Map<String, Boolean> req) {
         lessonCompletionService.updateCompleted(id, req.get("completed"));
         return ResponseEntity.noContent().build();
