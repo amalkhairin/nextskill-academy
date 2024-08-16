@@ -14,6 +14,23 @@ import java.util.Optional;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
+    @Query(value = "INSERT INTO courses(title, description, is_active) VALUES (:title, :description, :isActive) RETURNING *", nativeQuery = true)
+    Course create(
+            @Param("title") String title,
+            @Param("description") String description,
+            @Param("isActive") boolean isActive);
+
+    @Query(value = "UPDATE courses SET title = COALESCE(:title, courses.title), " +
+            "description = COALESCE(:description, courses.description), " +
+            "is_active = COALESCE(:isActive, courses.is_active) " +
+            "WHERE id = :id " +
+            "RETURNING *", nativeQuery = true)
+    Course update(
+            @Param("id") Long id,
+            @Param("title") String title,
+            @Param("description") String description,
+            @Param("isActive") boolean isActive);
+
     @Override
     @Query(value = "SELECT * FROM courses", nativeQuery = true)
     List<Course> findAll();

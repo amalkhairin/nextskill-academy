@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
                 .password(req.getPassword())
                 .role(req.getRole())
                 .build();
-        return userRepository.save(
+        return userRepository.create(
                 req.getFullName(),
                 req.getUsername(),
                 req.getEmail(),
@@ -51,7 +51,8 @@ public class UserServiceImpl implements UserService {
     public UserEntity update(Long id, UserDTO req) {
         UserEntity user = this.getById(id);
         user.setFullName(req.getFullName() == null || req.getFullName().isEmpty() ? user.getFullName() : req.getFullName());
-        return userRepository.save(
+        return userRepository.update(
+                user.getId(),
                 user.getFullName(),
                 user.getUsername(),
                 user.getEmail(),

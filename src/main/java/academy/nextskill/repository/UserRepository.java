@@ -28,6 +28,27 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                     @Param("password") String password,
                     @Param("role") String role);
 
+    @Query(value = "INSERT INTO users(full_name, username, email, password, role) VALUES (:fullName, :username, :email, :password, :role) RETURNING *", nativeQuery = true)
+    UserEntity create(@Param("fullName") String fullName,
+                    @Param("username") String username,
+                    @Param("email") String email,
+                    @Param("password") String password,
+                    @Param("role") String role);
+
+    @Query(value = "UPDATE users SET full_name = COALESCE(:fullName, users.full_name), " +
+            "username = COALESCE(:username, users.username), " +
+            "email = COALESCE(:email, users.email), " +
+            "password = COALESCE(:password, users.password), " +
+            "role = COALESCE(:role, users.role) " +
+            "WHERE id = :id " +
+            "RETURNING *", nativeQuery = true)
+    UserEntity update(@Param("id") Long id,
+                      @Param("fullName") String fullName,
+                      @Param("username") String username,
+                      @Param("email") String email,
+                      @Param("password") String password,
+                      @Param("role") String role);
+
     @Override
     @Query(value = "SELECT * FROM users", nativeQuery = true)
     List<UserEntity> findAll();
